@@ -1,17 +1,15 @@
 #include "painter.hpp"
+#include "utils.hpp"
 
 Painter::Painter() : WindowWidth(800), WindowHeight(600)
 {
 	init_SDL_calls();
 
-	_window = SDL_CreateWindow("Spacie",
-			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-			WindowWidth, WindowHeight,
-			SDL_WINDOW_OPENGL);
+	init_assign_vars();
 
-	_gl_context = SDL_GL_CreateContext(_window);
-
-	Quit = false;
+	glewExperimental = GL_TRUE;
+	GLenum glewstatus = glewInit();
+	assertf(glewstatus  == GLEW_OK, "%s", glewGetErrorString(glewstatus));
 }
 
 void Painter::init_SDL_calls()
@@ -21,6 +19,18 @@ void Painter::init_SDL_calls()
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+}
+
+void Painter::init_assign_vars()
+{
+	_window = SDL_CreateWindow("Spacie",
+			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+			WindowWidth, WindowHeight,
+			SDL_WINDOW_OPENGL);
+
+	_gl_context = SDL_GL_CreateContext(_window);
+
+	Quit = false;
 }
 
 Painter::~Painter()

@@ -1,6 +1,9 @@
 #ifndef PAINTER_HPP
 #define PAINTER_HPP
 
+#define GLEW_STATIC
+#include <GL/glew.h>
+
 #include <SDL2/SDL.h>
 
 class Painter
@@ -13,6 +16,7 @@ class Painter
 	const unsigned int WindowHeight;
 
 	void init_SDL_calls();
+	void init_assign_vars();
 
 public:
 	bool Quit;
