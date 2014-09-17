@@ -1,6 +1,23 @@
 #include "painter.hpp"
 #include "utils.hpp"
 
+void Painter::HandleInput()
+{
+	if (SDL_PollEvent(&_event)) {
+		if (_event.type == SDL_QUIT)
+			Quit = true;
+		if (_event.type == SDL_KEYUP &&
+				_event.key.keysym.sym == SDLK_ESCAPE)
+			Quit = true;
+	}
+}
+
+void Painter::Draw()
+{
+	SDL_GL_SwapWindow(_window);
+}
+
+
 Painter::Painter() : WindowWidth(800), WindowHeight(600)
 {
 	init_SDL_calls();
@@ -38,21 +55,5 @@ Painter::~Painter()
 	SDL_GL_DeleteContext(_gl_context);
 
 	SDL_Quit();
-}
-
-void Painter::HandleInput()
-{
-	if (SDL_PollEvent(&_event)) {
-		if (_event.type == SDL_QUIT)
-			Quit = true;
-		if (_event.type == SDL_KEYUP &&
-				_event.key.keysym.sym == SDLK_ESCAPE)
-			Quit = true;
-	}
-}
-
-void Painter::Draw()
-{
-	SDL_GL_SwapWindow(_window);
 }
 
