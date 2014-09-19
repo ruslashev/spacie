@@ -1,6 +1,15 @@
 #include "shader.hpp"
 #include "utils.hpp"
 
+Shader::Shader(std::string filename, GLuint n_type)
+{
+    type = n_type;
+    id = glCreateShader(type);
+    ReadFile(filename);
+    glShaderSource(id, 1, &file.c_str(), NULL);
+    Compile();
+}
+
 void Shader::ReadFile(std::string filename)
 {
 	std::ifstream ifs(filename.c_str(), std::ifstream::binary);
@@ -23,5 +32,20 @@ void Shader::ReadFile(std::string filename)
 	file = strbuffer;
 
 	delete[] buffer;
+}
+
+void Shader::Compile()
+{
+    glCompileShader(id);
+
+    GLint status;
+    glGetShaderiv(id, GL_COMPILE_STATUS, &status);
+    if (status == GL_FALSE) {
+        char buffer[512];
+        glGetShaderInfoLog(id, 512, NULL, buffer);
+        errorf("Failed to compile %s shader:\n%s",
+            type == GL_VERTEX_SHADER ? "Vertex" : "Fragment",
+            buffer);
+    }
 }
 
