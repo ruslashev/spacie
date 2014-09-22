@@ -14,6 +14,8 @@ public:
 
 	ShaderProgram(Shader &vert, Shader &frag);
 	~ShaderProgram();
+
+	void UseThisProgram();
 };
 
 #endif

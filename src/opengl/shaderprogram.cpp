@@ -15,3 +15,8 @@ void ShaderProgram::BindAttributes()
 	glEnableVertexAttribArray(position_attr);
 }
 
+void ShaderProgram::UseThisProgram()
+{
+	glUseProgram(id);
+}
+
