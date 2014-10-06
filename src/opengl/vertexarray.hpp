@@ -5,9 +5,9 @@
 
 class VertexArray
 {
+public:
 	GLuint id;
 
-public:
 	VertexArray();
 	~VertexArray();
 };

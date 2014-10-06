@@ -6,9 +6,9 @@
 
 class ShaderProgram
 {
-	GLint position_attr;
+	GLint _position_attr;
 	
-	void BindAttributes();
+	void bindAttributes();
 public:
 	GLuint id;
 

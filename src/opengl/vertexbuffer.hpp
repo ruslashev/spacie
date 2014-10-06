@@ -6,7 +6,7 @@
 
 class VertexBuffer
 {
-	GLuint id;
+	GLuint _id;
 
 public:
 	VertexBuffer();

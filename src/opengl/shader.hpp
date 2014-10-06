@@ -7,12 +7,12 @@
 
 class Shader
 {
-	GLuint type;
-	std::string filename;
-	std::string file_contents;
+	GLuint _type;
+	std::string _filename;
+	std::string _fileContents;
 
-	void ReadFile(std::string filename);
-	void Compile();
+	void readFile();
+	void compile();
 public:
 	GLuint id;
 

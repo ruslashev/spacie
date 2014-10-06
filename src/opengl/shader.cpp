@@ -3,23 +3,23 @@
 
 void Shader::Create(std::string n_filename, GLuint n_type)
 {
-	type = n_type;
-	filename = n_filename;
+	_type = n_type;
+	_filename = n_filename;
 
-	id = glCreateShader(type);
-	ReadFile(filename);
-	const char *file_c_str = filename.c_str();
-	glShaderSource(id, 1, &file_c_str, NULL);
-	Compile();
+	id = glCreateShader(_type);
+	readFile();
+	const char *_filename_c_str = _filename.c_str();
+	glShaderSource(id, 1, &_filename_c_str, NULL);
+	compile();
 }
 
-void Shader::ReadFile(std::string filename)
+void Shader::readFile()
 {
-	std::ifstream ifs(filename.c_str(), std::ifstream::binary);
-	assertf(ifs, "Failed to open file \"%s\" for reading.", filename.c_str());
+	std::ifstream ifs(_filename.c_str(), std::ifstream::binary);
+	assertf(ifs, "Failed to open file \"%s\" for reading.", _filename.c_str());
 
 	ifs.seekg(0, ifs.end);
-	int filesize = ifs.tellg();
+	const int filesize = ifs.tellg();
 
 	ifs.seekg(0, ifs.beg);
 
@@ -28,16 +28,16 @@ void Shader::ReadFile(std::string filename)
 	ifs.read(buffer, filesize);
 
 	assertf(ifs, "Only %d characters (%d%%) read from file \"%s\"",
-			ifs.gcount(), 100*ifs.gcount()/(double)filesize, filename.c_str());
+			ifs.gcount(), 100*ifs.gcount()/(double)filesize, _filename.c_str());
 	ifs.close();
 
 	std::string strbuffer(buffer);
-	file_contents = strbuffer;
+	_fileContents = strbuffer;
 
 	delete[] buffer;
 }
 
-void Shader::Compile()
+void Shader::compile()
 {
 	glCompileShader(id);
 
@@ -47,7 +47,7 @@ void Shader::Compile()
 		char buffer[512];
 		glGetShaderInfoLog(id, 512, NULL, buffer);
 		errorf("Failed to compile %s shader:\n%s",
-				type == GL_VERTEX_SHADER ? "Vertex" : "Fragment",
+				_type == GL_VERTEX_SHADER ? "Vertex" : "Fragment",
 				buffer);
 	}
 }
