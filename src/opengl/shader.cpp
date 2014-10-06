@@ -1,12 +1,14 @@
 #include "shader.hpp"
 #include "../utils.hpp"
 
-Shader::Shader(std::string filename, GLuint n_type)
+void Shader::Create(std::string n_filename, GLuint n_type)
 {
 	type = n_type;
+	filename = n_filename;
+
 	id = glCreateShader(type);
 	ReadFile(filename);
-	const char *file_c_str = file.c_str();
+	const char *file_c_str = filename.c_str();
 	glShaderSource(id, 1, &file_c_str, NULL);
 	Compile();
 }
@@ -30,7 +32,7 @@ void Shader::ReadFile(std::string filename)
 	ifs.close();
 
 	std::string strbuffer(buffer);
-	file = strbuffer;
+	file_contents = strbuffer;
 
 	delete[] buffer;
 }

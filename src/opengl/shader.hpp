@@ -8,14 +8,16 @@
 class Shader
 {
 	GLuint type;
-	std::string file;
+	std::string filename;
+	std::string file_contents;
 
 	void ReadFile(std::string filename);
 	void Compile();
 public:
 	GLuint id;
 
-	Shader(std::string filename, GLuint type);
+	void Create(std::string n_filename, GLuint n_type);
+	Shader();
 	~Shader();
 };
 
