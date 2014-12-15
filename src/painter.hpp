@@ -3,8 +3,9 @@
 
 #define GLEW_STATIC
 #include <GL/glew.h>
-
 #include <SDL2/SDL.h>
+
+#include "utils.hpp"
 
 class Painter
 {

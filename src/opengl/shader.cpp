@@ -1,5 +1,4 @@
 #include "shader.hpp"
-#include "../utils.hpp"
 
 void Shader::Create(std::string n_filename, GLuint n_type)
 {

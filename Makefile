@@ -1,5 +1,5 @@
 CXX = clang++
-OBJS = $(patsubst src/%.cpp, .objs/%.o, $(shell find src -type f -name "*.cpp" ))
+OBJS = $(patsubst src/%.cpp, .objs/%.o, $(shell find src -type f -name '*.cpp' ))
 CFLAGS = -Wall -Werror -g -std=c++0x
 LDFLAGS = -lSDL2 -lGLEW
 EXECNAME = spacie
@@ -15,6 +15,7 @@ $(EXECNAME): $(OBJS)
 
 objdir:
 	@mkdir -p .objs/
+	@mkdir -p .objs/opengl
 
 clean:
 	-rm -f .objs/*.o $(EXECNAME)

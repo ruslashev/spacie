@@ -5,6 +5,8 @@
 #include <fstream>
 #include <GL/glew.h>
 
+#include "../utils.hpp"
+
 class Shader
 {
 	GLuint _type;

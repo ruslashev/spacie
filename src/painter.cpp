@@ -1,5 +1,4 @@
 #include "painter.hpp"
-#include "utils.hpp"
 
 void Painter::HandleInput()
 {
