@@ -14,13 +14,21 @@ void startGame()
 
 int main()
 {
-#define RED_ERROR "\x1b[31m" "ERROR" "\x1b[0m"
+#define RED_ERROR "\x1b[31m" "ERROR" "\x1b[0m" "\n"
 	try {
 		startGame();
-	} catch (const std::bad_alloc&) {
-		fputs(RED_ERROR " Failed to allocate memory\n", stderr);
+	} catch (std::bad_alloc &ba) {
+		fprintf(stderr, RED_ERROR
+				"Failed to allocate memory: %s\n", ba.what());
+
+		return 1;
 	} catch (std::exception &e) {
-		fprintf(stderr, RED_ERROR " %s\n", e.what());
+		fprintf(stderr, RED_ERROR
+				"%s\n", e.what());
+
+		return 1;
 	}
+
+	return 0;
 }
 

@@ -16,7 +16,6 @@ void Painter::Draw()
 	SDL_GL_SwapWindow(_window);
 }
 
-
 Painter::Painter() : WindowWidth(800), WindowHeight(600)
 {
 	init_SDL_calls();
@@ -25,7 +24,7 @@ Painter::Painter() : WindowWidth(800), WindowHeight(600)
 
 	glewExperimental = GL_TRUE;
 	GLenum glewstatus = glewInit();
-	assertf(glewstatus  == GLEW_OK, "%s", glewGetErrorString(glewstatus));
+	assertf(glewstatus == GLEW_OK, "%s", glewGetErrorString(glewstatus));
 }
 
 void Painter::init_SDL_calls()
