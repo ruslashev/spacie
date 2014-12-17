@@ -1,6 +1,6 @@
 CXX = clang++
 OBJS = $(patsubst src/%.cpp, .objs/%.o, $(shell find src -type f -name '*.cpp' ))
-CFLAGS = -Wall -Werror -g -std=c++0x
+CXXFLAGS = -Wall -Werror -g -std=c++0x
 LDFLAGS = -lSDL2 -lGLEW
 EXECNAME = spacie
 
@@ -8,15 +8,24 @@ all: objdir $(EXECNAME)
 	./$(EXECNAME)
 
 .objs/%.o: src/%.cpp
-	$(CXX) -c -o $@ $< $(CFLAGS)
+	@$(CXX) -c -o $@ $< $(CXXFLAGS)
+	@echo "Compiling $<"
 
 $(EXECNAME): $(OBJS)
-	$(CXX) -o $@ $^ $(LDFLAGS)
+	@$(CXX) -o $@ $^ $(LDFLAGS)
+	@echo "Linking to $@"
+
+valgrind: objdir $(EXECNAME)
+	valgrind --leak-check=full ./$(EXECNAME)
+
+callgrind: objdir $(EXECNAME)
+	@valgrind --tool=callgrind ./$(EXECNAME)
+	@kcachegrind callgrind.out.$!
 
 objdir:
-	@mkdir -p .objs/
 	@mkdir -p .objs/opengl
 
 clean:
-	-rm -f .objs/*.o $(EXECNAME)
+	-rm -f $(EXECNAME)
+	-rm -rf .objs/
 
