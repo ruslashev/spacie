@@ -1,5 +1,16 @@
 #include "painter.hpp"
 
+Painter::Painter() : _window_width(800), _window_height(600)
+{
+	init_do_SDL_calls();
+
+	init_assign_vars();
+
+	glewExperimental = GL_TRUE;
+	GLenum glewstatus = glewInit();
+	assertf(glewstatus == GLEW_OK, "%s", glewGetErrorString(glewstatus));
+}
+
 void Painter::HandleInput()
 {
 	if (SDL_PollEvent(&_event)) {
@@ -16,18 +27,7 @@ void Painter::Draw()
 	SDL_GL_SwapWindow(_window);
 }
 
-Painter::Painter() : WindowWidth(800), WindowHeight(600)
-{
-	init_SDL_calls();
-
-	init_assign_vars();
-
-	glewExperimental = GL_TRUE;
-	GLenum glewstatus = glewInit();
-	assertf(glewstatus == GLEW_OK, "%s", glewGetErrorString(glewstatus));
-}
-
-void Painter::init_SDL_calls()
+void Painter::init_do_SDL_calls()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -40,7 +40,7 @@ void Painter::init_assign_vars()
 {
 	_window = SDL_CreateWindow("Spacie",
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-			WindowWidth, WindowHeight,
+			_window_width, _window_height,
 			SDL_WINDOW_OPENGL);
 
 	_gl_context = SDL_GL_CreateContext(_window);

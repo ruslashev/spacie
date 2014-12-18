@@ -13,10 +13,10 @@ class Painter
 	SDL_GLContext _gl_context;
 	SDL_Event _event;
 
-	const unsigned int WindowWidth;
-	const unsigned int WindowHeight;
+	const unsigned int _window_width;
+	const unsigned int _window_height;
 
-	void init_SDL_calls();
+	void init_do_SDL_calls();
 	void init_assign_vars();
 
 public:
