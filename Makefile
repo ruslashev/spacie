@@ -1,7 +1,7 @@
 CXX = clang++
 OBJS = $(patsubst src/%.cpp, .objs/%.o, $(shell find src -type f -name '*.cpp' ))
 CXXFLAGS = -Wall -Werror -g -std=c++0x
-LDFLAGS = -lSDL2 -lGLEW
+LDFLAGS = -lSDL2 -lGLEW -lGL
 EXECNAME = spacie
 
 all: objdir $(EXECNAME)

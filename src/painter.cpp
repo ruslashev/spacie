@@ -9,6 +9,8 @@ Painter::Painter() : _window_width(800), _window_height(600)
 	glewExperimental = GL_TRUE;
 	GLenum glewstatus = glewInit();
 	assertf(glewstatus == GLEW_OK, "%s", glewGetErrorString(glewstatus));
+
+	opengl.Construct();
 }
 
 void Painter::HandleInput()
@@ -24,6 +26,8 @@ void Painter::HandleInput()
 
 void Painter::Draw()
 {
+	opengl.Draw();
+
 	SDL_GL_SwapWindow(_window);
 }
 

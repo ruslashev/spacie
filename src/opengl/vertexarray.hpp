@@ -8,8 +8,9 @@ class VertexArray
 public:
 	GLuint id;
 
-	VertexArray();
 	~VertexArray();
+
+	void Construct();
 };
 
 #endif

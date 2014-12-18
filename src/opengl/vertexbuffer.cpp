@@ -1,6 +1,6 @@
 #include "vertexbuffer.hpp"
 
-VertexBuffer::VertexBuffer()
+void VertexBuffer::Construct()
 {
 	glGenBuffers(1, &_id);
 }

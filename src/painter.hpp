@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
 
+#include "opengl/opengl.hpp"
 #include "utils.hpp"
 
 class Painter
@@ -12,6 +13,7 @@ class Painter
 	SDL_Window *_window;
 	SDL_GLContext _gl_context;
 	SDL_Event _event;
+	OpenGL opengl;
 
 	const unsigned int _window_width;
 	const unsigned int _window_height;

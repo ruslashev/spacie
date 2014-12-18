@@ -14,7 +14,7 @@ void startGame()
 
 int main()
 {
-#define RED_ERROR "\x1b[31m" "ERROR" "\x1b[0m" "\n"
+#define RED_ERROR "\x1b[31m" "ERROR" "\x1b[0m" " "
 	try {
 		startGame();
 	} catch (std::bad_alloc &ba) {

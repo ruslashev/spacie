@@ -1,6 +1,6 @@
 #include "shaderprogram.hpp"
 
-ShaderProgram::ShaderProgram(const Shader &vert, const Shader &frag)
+void ShaderProgram::Construct(const Shader &vert, const Shader &frag)
 {
 	id = glCreateProgram();
 	glAttachShader(id, vert.id);
@@ -18,5 +18,10 @@ void ShaderProgram::bindAttributes()
 void ShaderProgram::UseThisProgram()
 {
 	glUseProgram(id);
+}
+
+ShaderProgram::~ShaderProgram()
+{
+	glDeleteProgram(id);
 }
 

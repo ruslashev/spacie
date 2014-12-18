@@ -9,9 +9,9 @@ class VertexBuffer
 	GLuint _id;
 
 public:
-	VertexBuffer();
 	~VertexBuffer();
 
+	void Construct();
 	void Upload(std::vector<double> &data);
 };
 

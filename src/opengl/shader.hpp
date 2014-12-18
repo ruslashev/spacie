@@ -3,6 +3,7 @@
 
 #include <string>
 #include <fstream>
+#include <cstring>
 #include <GL/glew.h>
 
 #include "../utils.hpp"
@@ -17,10 +18,9 @@ class Shader
 public:
 	GLuint id;
 
-	Shader();
 	~Shader();
 
-	void Create(std::string n_source_filename, GLuint n_type);
+	void Construct(std::string n_source_filename, GLuint n_type);
 };
 
 #endif

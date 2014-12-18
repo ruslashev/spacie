@@ -12,9 +12,9 @@ class ShaderProgram
 public:
 	GLuint id;
 
-	ShaderProgram(const Shader &vert, const Shader &frag);
 	~ShaderProgram();
 
+	void Construct(const Shader &vert, const Shader &frag);
 	void UseThisProgram();
 };
 
