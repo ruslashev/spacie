@@ -24,3 +24,28 @@ void errorf(const char *format, ...)
     throw std::runtime_error(output);
 }
 
+std::string readFile(std::string path)
+{
+	std::ifstream ifs(path.c_str(), std::ifstream::binary);
+	assertf(ifs, "Failed to open file \"%s\" for reading.", path.c_str());
+
+	ifs.seekg(0, ifs.end);
+	const int filesize = ifs.tellg();
+	ifs.seekg(0, ifs.beg);
+
+	char *buffer = new char [filesize];
+
+	ifs.read(buffer, filesize);
+
+	int read = ifs.gcount();
+	double percent = 100.*read/(double)filesize;
+	assertf(ifs, "Only %d characters (%.2f%%) read from file \"%s\"",
+			read, percent, path.c_str());
+
+	ifs.close();
+
+	delete[] buffer;
+
+	return std::string(buffer);
+}
+
