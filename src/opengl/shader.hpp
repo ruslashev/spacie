@@ -17,11 +17,11 @@ class Shader
 public:
 	GLuint id;
 
-	void Create(std::string n_source_filename, GLuint n_type);
 	Shader();
 	~Shader();
+
+	void Create(std::string n_source_filename, GLuint n_type);
 };
 
 #endif
-
 

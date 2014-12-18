@@ -1,6 +1,6 @@
 #include "shaderprogram.hpp"
 
-ShaderProgram::ShaderProgram(Shader &vert, Shader &frag)
+ShaderProgram::ShaderProgram(const Shader &vert, const Shader &frag)
 {
 	id = glCreateProgram();
 	glAttachShader(id, vert.id);

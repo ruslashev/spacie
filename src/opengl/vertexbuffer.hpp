@@ -10,8 +10,9 @@ class VertexBuffer
 
 public:
 	VertexBuffer();
-	void Upload(std::vector<double> &data);
 	~VertexBuffer();
+
+	void Upload(std::vector<double> &data);
 };
 
 #endif
