@@ -5,9 +5,9 @@ void OpenGL::Construct()
 	vao.Construct();
 
 	std::vector<double> vertices = {
-		 0.0f,  0.5f,
-		 0.5f, -0.5f,
-		-0.5f, -0.5f
+		 .0,  .5,
+		 .5, -.5,
+		-.5, -.5
 	};
 
 	vertex_buffer.Construct();
@@ -21,6 +21,8 @@ void OpenGL::Construct()
 
 void OpenGL::Draw()
 {
+	glClearColor(0, 0, 0, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 

@@ -44,8 +44,10 @@ std::string readFile(std::string path)
 
 	ifs.close();
 
+	std::string buf_str(buffer);
+
 	delete[] buffer;
 
-	return std::string(buffer);
+	return buf_str;
 }
 

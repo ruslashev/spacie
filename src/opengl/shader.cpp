@@ -25,10 +25,22 @@ void Shader::compile()
 	if (status == GL_FALSE) {
 		char buffer[512];
 		glGetShaderInfoLog(id, 512, NULL, buffer);
-		buffer[strlen(buffer)-1] = '\0'; // strip trailing newline
+
+		std::string buf_str(buffer);
+		// strip trailing newline
+		buf_str.pop_back();
+		// indent error log
+		int indent = 5;
+		buf_str.insert(buf_str.begin(), indent, ' ');
+		for (size_t i = 0; i < buf_str.size(); i++) {
+			if (buf_str[i] != '\n')
+				continue;
+			buf_str.insert(i, indent, ' ');
+		}
+
 		errorf("Failed to compile %s shader:\n%s",
 				_type == GL_VERTEX_SHADER ? "Vertex" : "Fragment",
-				buffer);
+				buf_str.c_str());
 	}
 }
 
