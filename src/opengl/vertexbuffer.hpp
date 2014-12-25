@@ -12,7 +12,7 @@ public:
 	~VertexBuffer();
 
 	void Construct();
-	void Upload(std::vector<double> &data);
+	void Upload(std::vector<float> &data);
 };
 
 #endif

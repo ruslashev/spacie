@@ -1,18 +1,15 @@
 #include "shaderprogram.hpp"
 
-void ShaderProgram::Construct(const Shader &vert, const Shader &frag)
+void ShaderProgram::Construct(const Shader *vert, const Shader *frag)
 {
 	id = glCreateProgram();
-	glAttachShader(id, vert.id);
-	glAttachShader(id, frag.id);
+	glAttachShader(id, vert->id);
+	glAttachShader(id, frag->id);
+	glBindFragDataLocation(id, 0, "outColor");
+	glLinkProgram(id);
+	UseThisProgram();
 
 	bindAttributes();
-
-	glBindFragDataLocation(id, 0, "outColor");
-
-	glLinkProgram(id);
-
-	UseThisProgram();
 }
 
 void ShaderProgram::bindAttributes()

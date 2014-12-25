@@ -14,7 +14,7 @@ public:
 
 	~ShaderProgram();
 
-	void Construct(const Shader &vert, const Shader &frag);
+	void Construct(const Shader *vert, const Shader *frag);
 	void UseThisProgram();
 };
 

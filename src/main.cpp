@@ -7,7 +7,6 @@ void startGame()
 
 	while (!painter.Quit) {
 		painter.HandleInput();
-
 		painter.Draw();
 	}
 }
@@ -18,14 +17,12 @@ int main()
 	try {
 		startGame();
 	} catch (std::bad_alloc &ba) {
-		fprintf(stderr, RED_ERROR
-				"Failed to allocate memory: %s\n", ba.what());
-
+		fprintf(stderr, RED_ERROR);
+		fprintf(stderr, "Failed to allocate memory: %s\n", ba.what());
 		return 1;
 	} catch (std::exception &e) {
-		fprintf(stderr, RED_ERROR
-				"%s\n", e.what());
-
+		fprintf(stderr, RED_ERROR);
+		fprintf(stderr, "%s\n", e.what());
 		return 1;
 	}
 

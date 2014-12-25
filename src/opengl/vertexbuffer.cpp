@@ -3,9 +3,18 @@
 void VertexBuffer::Construct()
 {
 	glGenBuffers(1, &_id);
+
+	GLfloat vertices[] = {
+		0.0f, 0.5f,
+		0.5f, -0.5f,
+		-0.5f, -0.5f
+	};
+	glBindBuffer(GL_ARRAY_BUFFER, _id);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices,
+			GL_STATIC_DRAW);
 }
 
-void VertexBuffer::Upload(std::vector<double> &data)
+void VertexBuffer::Upload(std::vector<float> &data)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, _id);
 	glBufferData(GL_ARRAY_BUFFER, data.size()*sizeof(data[0]), data.data(),
