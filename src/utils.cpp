@@ -24,18 +24,27 @@ void errorf(const char *format, ...)
     throw std::runtime_error(output);
 }
 
-std::string readFile(std::string path)
+File readFile(std::string path)
 {
 	std::ifstream ifs(path.c_str(), std::ifstream::binary);
 	assertf(ifs, "Failed to open file \"%s\" for reading.", path.c_str());
 
 	ifs.seekg(0, ifs.end);
-	const int filesize = ifs.tellg();
+	const size_t filesize = ifs.tellg();
 	ifs.seekg(0, ifs.beg);
 
-	char *buffer = new char [filesize];
+	// size sanity check
+	const size_t size_sane = 2048;
+	if (filesize > size_sane)
+		errorf("File \"%s\" is too big: %d bytes out of %d\n"
+				"currently being a sane maximum allocated for a file.",
+				path.c_str(),
+				filesize,
+				size_sane);
 
+	char *buffer = new char [filesize+1];
 	ifs.read(buffer, filesize);
+	buffer[filesize] = '\0';
 
 	int read = ifs.gcount();
 	double percent = 100.*read/(double)filesize;
@@ -48,6 +57,6 @@ std::string readFile(std::string path)
 
 	delete[] buffer;
 
-	return buf_str;
+	return File { filesize+1, buf_str };
 }
 

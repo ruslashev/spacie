@@ -11,8 +11,8 @@
 class Shader
 {
 	GLuint _type;
-	std::string _source_filename;
-	std::string debug_shader_type_str;
+	std::string _src_filename;
+	std::string _debug_shader_type_str;
 
 	void source();
 	void compile();

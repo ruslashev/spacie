@@ -1,10 +1,10 @@
 #include "shader.hpp"
 
-void Shader::Construct(std::string n_source_filename, GLuint n_type)
+void Shader::Construct(std::string n_src_filename, GLuint n_type)
 {
-	_source_filename = n_source_filename;
+	_src_filename = n_src_filename;
 	_type = n_type;
-	debug_shader_type_str =
+	_debug_shader_type_str =
 				_type == GL_VERTEX_SHADER ? "Vertex" : "Fragment";
 
 	id = glCreateShader(_type);
@@ -16,25 +16,11 @@ void Shader::Construct(std::string n_source_filename, GLuint n_type)
 
 void Shader::source()
 {
-	std::string source_file_contents = readFile(_source_filename);
+	File src_file = readFile(_src_filename);
 
-	// size sanity check
-	const size_t size_sane = 1024;
-	if (source_file_contents.size() > size_sane)
-		errorf("%s shader (\"%s\") source file is too big: %d bytes out of %d\n"
-				"currently being maximum allocated size for a shader.",
-				debug_shader_type_str.c_str(),
-				_source_filename.c_str(),
-				source_file_contents.size(),
-				size_sane);
-
-	const size_t len = source_file_contents.size() + 1;
-    char *c_str = new char[len];
-    memcpy(c_str, source_file_contents.c_str(), len);
+	const GLchar *c_str = src_file.contents.c_str();
 
 	glShaderSource(id, 1, &c_str, NULL);
-
-	delete [] c_str;
 }
 
 void Shader::compile()
@@ -61,8 +47,8 @@ void Shader::compile()
 		}
 
 		errorf("Failed to compile %s shader (\"%s\"):\n%s",
-				_type == GL_VERTEX_SHADER ? "Vertex" : "Fragment",
-				_source_filename.c_str(),
+				_debug_shader_type_str.c_str(),
+				_src_filename.c_str(),
 				buf_str.c_str());
 	}
 }

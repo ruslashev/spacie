@@ -10,7 +10,11 @@ void assertf(bool condition, const char *format, ...);
 
 void errorf(const char *format, ...);
 
-std::string readFile(std::string path);
+struct File {
+	size_t size;
+	std::string contents;
+};
+File readFile(std::string path);
 
 #endif
 
