@@ -10,7 +10,7 @@ Painter::Painter() : _window_width(800), _window_height(600)
 	GLenum glewstatus = glewInit();
 	assertf(glewstatus == GLEW_OK, "%s", glewGetErrorString(glewstatus));
 
-	opengl.Construct();
+	opengl.Construct(_window_width, _window_height);
 }
 
 void Painter::HandleInput()
