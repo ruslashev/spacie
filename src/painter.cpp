@@ -4,8 +4,6 @@ Painter::Painter() : _window_width(800), _window_height(600)
 {
 	init_do_SDL_calls();
 
-	init_assign_vars();
-
 	glewExperimental = GL_TRUE;
 	GLenum glewstatus = glewInit();
 	assertf(glewstatus == GLEW_OK, "%s", glewGetErrorString(glewstatus));
@@ -38,10 +36,7 @@ void Painter::init_do_SDL_calls()
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-}
 
-void Painter::init_assign_vars()
-{
 	_window = SDL_CreateWindow("Spacie",
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 			_window_width, _window_height,

@@ -24,6 +24,7 @@ callgrind: objdir $(EXECNAME)
 
 objdir:
 	@mkdir -p .objs/opengl
+	@mkdir -p .objs/physics
 
 clean:
 	-rm -f $(EXECNAME)

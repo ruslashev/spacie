@@ -19,8 +19,6 @@ class Painter
 	const unsigned int _window_height;
 
 	void init_do_SDL_calls();
-	void init_assign_vars();
-
 public:
 	bool Quit;
 
