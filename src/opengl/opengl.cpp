@@ -5,7 +5,10 @@ void OpenGL::Construct(const unsigned int window_width, const unsigned int windo
 {
 	vao.Construct();
 
-	std::vector<GLfloat> vertices = LoadOBJ("suzanne.obj");
+	std::vector<GLfloat> vertices;
+	std::vector<GLushort> elements;
+	LoadOBJ("suzanne.obj", &vertices, NULL, &elements);
+
 	vertex_buffer.Construct();
 	vertex_buffer.Upload(vertices);
 
