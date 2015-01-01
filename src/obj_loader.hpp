@@ -7,6 +7,8 @@
 #include <vector>
 #include <string>
 
+#include "utils.hpp"
+
 void LoadOBJ(std::string path,
 		std::vector<GLfloat> *out_verts,
 		std::vector<GLfloat> *out_normals,

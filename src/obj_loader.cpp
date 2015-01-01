@@ -1,5 +1,4 @@
 #include "obj_loader.hpp"
-#include "utils.hpp"
 
 using namespace std;
 

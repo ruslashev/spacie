@@ -11,6 +11,8 @@
 #include "shaderprogram.hpp"
 #include "vertexarray.hpp"
 #include "vertexbuffer.hpp"
+#include "elementbuffer.hpp"
+#include "../obj_loader.hpp"
 
 class OpenGL
 {
@@ -19,10 +21,13 @@ class OpenGL
 	Shader shader_frag;
 	VertexArray vao;
 	VertexBuffer vertex_buffer;
+	ElementBuffer element_buffer;
 
 	glm::mat4 _model_mat;
 	glm::mat4 _view_mat;
 	glm::mat4 _proj_mat;
+
+	GLuint temp_elements_size;
 public:
 	void Construct(const unsigned int window_width, const unsigned int window_height);
 	void Draw();

@@ -9,7 +9,7 @@
 class VertexBuffer : public OpenGL_Buffer
 {
 public:
-	void Upload(std::vector<float> &data);
+	void Upload(std::vector<GLfloat> &data);
 };
 
 #endif
