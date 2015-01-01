@@ -16,9 +16,9 @@ void LoadOBJ(std::string path,
 
 	std::string temp;
 	while (1) {
-		if (ifs.eof())
-			break;
 		ifs >> temp;
+		if (!ifs.good())
+			break;
 		GLfloat x, y, z;
 		if (temp == "v") {
 			ifs >> x >> y >> z;
