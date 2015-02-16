@@ -10,6 +10,7 @@
 class ShaderProgram
 {
 	GLint _position_attr;
+	GLint _normal_attr;
 	GLint _color_unif;
 	GLint _model_mat_unif;
 	GLint _proj_mat_unif;

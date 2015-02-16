@@ -5,6 +5,7 @@ uniform mat4 view;
 uniform mat4 proj;
 
 in vec3 position;
+in vec3 normal;
 
 void main()
 {

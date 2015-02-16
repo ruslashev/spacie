@@ -1,12 +1,12 @@
-#ifndef VERTEXBUFFER_HPP
-#define VERTEXBUFFER_HPP
+#ifndef ARRAYBUFFER_HPP
+#define ARRAYBUFFER_HPP
 
 #include "opengl_buffer.hpp"
 
 #include <vector>
 #include <GL/glew.h>
 
-class VertexBuffer : public OpenGL_Buffer
+class ArrayBuffer : public OpenGL_Buffer
 {
 public:
 	void Upload(std::vector<GLfloat> &data);

@@ -18,6 +18,10 @@ void ShaderProgram::bindAttributes()
 	_position_attr = glGetAttribLocation(id, "position");
 	glEnableVertexAttribArray(_position_attr);
 	glVertexAttribPointer(_position_attr, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+	_normal_attr = glGetAttribLocation(id, "normal");
+	glEnableVertexAttribArray(_normal_attr);
+	glVertexAttribPointer(_normal_attr, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 void ShaderProgram::bindUniforms()

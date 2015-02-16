@@ -10,7 +10,7 @@
 #include "shader.hpp"
 #include "shaderprogram.hpp"
 #include "vertexarray.hpp"
-#include "vertexbuffer.hpp"
+#include "arraybuffer.hpp"
 #include "elementbuffer.hpp"
 #include "../obj_loader.hpp"
 
@@ -20,7 +20,8 @@ class OpenGL
 	Shader shader_vert;
 	Shader shader_frag;
 	VertexArray vao;
-	VertexBuffer vertex_buffer;
+	ArrayBuffer vertex_buffer;
+	ArrayBuffer normal_buffer;
 	ElementBuffer element_buffer;
 
 	glm::mat4 _model_mat;
