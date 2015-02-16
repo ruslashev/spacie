@@ -39,14 +39,18 @@ void LoadOBJ(std::string path,
 			elements.push_back(a);
 			elements.push_back(b);
 			elements.push_back(c);
-		} else {}
+		}
 	}
 
-	if (out_verts != NULL)
+	printf("verts: %zu\n", vertices.size());
+	printf("norms: %zu\n", normals.size());
+	printf("elems: %zu\n", elements.size());
+
+	if (out_verts)
 		*out_verts = vertices;
-	if (out_normals != NULL)
+	if (out_normals)
 		*out_normals = normals;
-	if (out_elements != NULL)
+	if (out_elements)
 		*out_elements = elements;
 }
 
