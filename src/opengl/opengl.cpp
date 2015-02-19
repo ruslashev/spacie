@@ -15,14 +15,15 @@ void OpenGL::Construct(const unsigned int window_width, const unsigned int windo
 	normal_buffer.Construct();
 	normal_buffer.Upload(normals);
 
-	element_buffer.Construct();
+	element_buffer.Construct(GL_ELEMENT_ARRAY_BUFFER);
 	element_buffer.Upload(elements);
 	temp_elements_size = elements.size();
 
 	shader_vert.Construct("shader.vs", GL_VERTEX_SHADER);
 	shader_frag.Construct("shader.fs", GL_FRAGMENT_SHADER);
-
+	
 	shader_program.Construct(&shader_vert, &shader_frag);
+	shader_program.BindAttributes(&vertex_buffer, &normal_buffer);
 
 	_model_mat = glm::mat4();
 

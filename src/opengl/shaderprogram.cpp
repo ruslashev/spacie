@@ -9,19 +9,25 @@ void ShaderProgram::Construct(const Shader *vert, const Shader *frag)
 	glLinkProgram(id);
 	UseThisProgram();
 
-	bindAttributes();
 	bindUniforms();
 }
 
-void ShaderProgram::bindAttributes()
+void ShaderProgram::BindAttributes(const ArrayBuffer *vertex_buffer,
+		const ArrayBuffer *normal_buffer)
 {
+	vertex_buffer->Bind();
 	_position_attr = glGetAttribLocation(id, "position");
 	glEnableVertexAttribArray(_position_attr);
 	glVertexAttribPointer(_position_attr, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glDisableVertexAttribArray(_position_attr);
+	vertex_buffer->Unbind();
 
+	normal_buffer->Bind();
 	_normal_attr = glGetAttribLocation(id, "normal");
 	glEnableVertexAttribArray(_normal_attr);
 	glVertexAttribPointer(_normal_attr, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glDisableVertexAttribArray(_normal_attr);
+	normal_buffer->Unbind();
 }
 
 void ShaderProgram::bindUniforms()
@@ -32,7 +38,6 @@ void ShaderProgram::bindUniforms()
 	_model_mat_unif = glGetUniformLocation(id, "model");
 	_proj_mat_unif = glGetUniformLocation(id, "proj");
 	_view_mat_unif = glGetUniformLocation(id, "view");
-
 }
 
 void ShaderProgram::UseThisProgram()
