@@ -4,6 +4,8 @@ void OpenGL::Construct(const unsigned int window_width, const unsigned int windo
 {
 	vao.Construct();
 
+	Resize(window_width, window_height);
+
 	std::vector<GLfloat> vertices;
 	std::vector<GLfloat> normals;
 	std::vector<GLushort> elements;
@@ -43,5 +45,10 @@ void OpenGL::Draw()
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glDrawElements(GL_TRIANGLES, temp_elements_size, GL_UNSIGNED_SHORT, 0);
+}
+
+void OpenGL::Resize(const int new_width, const int new_height)
+{
+	glViewport(0, 0, new_width, new_height);
 }
 

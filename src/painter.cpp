@@ -19,6 +19,8 @@ void Painter::HandleInput()
 		if (_event.type == SDL_KEYUP &&
 				_event.key.keysym.sym == SDLK_ESCAPE)
 			Quit = true;
+		if (_event.type == SDL_WINDOWEVENT_RESIZED)
+			opengl.Resize(_event.window.data1, _event.window.data2);
 	}
 }
 

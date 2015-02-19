@@ -32,6 +32,7 @@ class OpenGL
 public:
 	void Construct(const unsigned int window_width, const unsigned int window_height);
 	void Draw();
+	void Resize(const int new_width, const int new_height);
 };
 
 #endif
