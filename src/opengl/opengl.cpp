@@ -37,11 +37,16 @@ void OpenGL::Construct(const unsigned int window_width, const unsigned int windo
 
 void OpenGL::Draw()
 {
+	shader_program.UseThisProgram();
 	shader_program.UpdateMatrices(_model_mat, _view_mat, _proj_mat);
 
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	element_buffer.Bind();
 	glDrawElements(GL_TRIANGLES, temp_elements_size, GL_UNSIGNED_SHORT, 0);
+	element_buffer.Unbind();
+	shader_program.DontUseThisProgram();
 }
 
 void OpenGL::Resize(const int new_width, const int new_height)

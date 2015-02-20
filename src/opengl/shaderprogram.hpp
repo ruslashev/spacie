@@ -28,6 +28,7 @@ public:
 		GLint size, GLenum type, GLboolean normalized, GLsizei stride,
 		const GLvoid *ptr);
 	void UseThisProgram();
+	void DontUseThisProgram();
 	void UpdateMatrices(const glm::mat4 &model,
 			const glm::mat4 &view, const glm::mat4 &proj);
 };

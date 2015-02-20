@@ -3,10 +3,10 @@
 void ShaderProgram::Construct(const Shader *vert, const Shader *frag)
 {
 	id = glCreateProgram();
-	glBindFragDataLocation(id, 0, "outColor");
 	link(vert, frag);
-	UseThisProgram();
 
+	UseThisProgram();
+	glBindFragDataLocation(id, 0, "outColor");
 	bindUniforms();
 }
 
@@ -22,11 +22,7 @@ void ShaderProgram::link(const Shader *vert, const Shader *frag)
 
 	if (status == GL_FALSE) {
 		char buffer[1024];
-		GLsizei length;
-		glGetProgramInfoLog(id, 1024, &length, buffer);
-
-		assertf(length > 1, "Shaders failed to link but the error log is %d "
-				"characters long", length);
+		glGetProgramInfoLog(id, 1024, NULL, buffer);
 
 		std::string buf_str(buffer);
 		// strip trailing newline
@@ -72,6 +68,11 @@ void ShaderProgram::BindAttribute(const ArrayBuffer *buffer, const char *name,
 void ShaderProgram::UseThisProgram()
 {
 	glUseProgram(id);
+}
+
+void ShaderProgram::DontUseThisProgram()
+{
+	glUseProgram(0);
 }
 
 void ShaderProgram::UpdateMatrices(const glm::mat4 &model,
