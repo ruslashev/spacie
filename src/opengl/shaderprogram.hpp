@@ -11,8 +11,6 @@
 
 class ShaderProgram
 {
-	GLint _position_attr;
-	GLint _normal_attr;
 	GLint _color_unif;
 	GLint _model_mat_unif;
 	GLint _proj_mat_unif;
@@ -26,8 +24,9 @@ public:
 	~ShaderProgram();
 
 	void Construct(const Shader *vert, const Shader *frag);
-	void BindAttributes(const ArrayBuffer *vertex_buffer,
-			const ArrayBuffer *normal_buffer);
+	void BindAttribute(const ArrayBuffer *buffer, const char *name,
+		GLint size, GLenum type, GLboolean normalized, GLsizei stride,
+		const GLvoid *ptr);
 	void UseThisProgram();
 	void UpdateMatrices(const glm::mat4 &model,
 			const glm::mat4 &view, const glm::mat4 &proj);

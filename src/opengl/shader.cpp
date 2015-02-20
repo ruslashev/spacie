@@ -27,17 +27,10 @@ void Shader::compile()
 {
 	glCompileShader(id);
 
-	GLint status;
+	GLint status = GL_FALSE;
 	glGetShaderiv(id, GL_COMPILE_STATUS, &status);
 
 	if (status == GL_FALSE) {
-        GLint infoLogLength;
-        glGetProgramiv(id, GL_INFO_LOG_LENGTH, &infoLogLength);
-		assertf(infoLogLength < 1024,
-				"Failed to compile %s shader (\"%s\")\nand you are out of luck",
-				_debug_shader_type_str.c_str(),
-				_src_filename.c_str());
-
 		char buffer[1024];
 		glGetShaderInfoLog(id, 1024, NULL, buffer);
 

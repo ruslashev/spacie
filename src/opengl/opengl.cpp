@@ -7,15 +7,11 @@ void OpenGL::Construct(const unsigned int window_width, const unsigned int windo
 	Resize(window_width, window_height);
 
 	std::vector<GLfloat> vertices;
-	std::vector<GLfloat> normals;
 	std::vector<GLushort> elements;
-	LoadOBJ("suzanne.obj", &vertices, &normals, &elements);
+	LoadOBJ("suzanne.obj", &vertices, NULL, &elements);
 
 	vertex_buffer.Construct();
 	vertex_buffer.Upload(vertices);
-
-	normal_buffer.Construct();
-	normal_buffer.Upload(normals);
 
 	element_buffer.Construct(GL_ELEMENT_ARRAY_BUFFER);
 	element_buffer.Upload(elements);
@@ -23,9 +19,10 @@ void OpenGL::Construct(const unsigned int window_width, const unsigned int windo
 
 	shader_vert.Construct("shader.vs", GL_VERTEX_SHADER);
 	shader_frag.Construct("shader.fs", GL_FRAGMENT_SHADER);
-	
+
 	shader_program.Construct(&shader_vert, &shader_frag);
-	shader_program.BindAttributes(&vertex_buffer, &normal_buffer);
+	shader_program.BindAttribute(&vertex_buffer, "position",
+			3, GL_FLOAT, GL_FALSE, 0, 0);
 
 	_model_mat = glm::mat4();
 

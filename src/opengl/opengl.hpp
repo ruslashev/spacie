@@ -21,7 +21,6 @@ class OpenGL
 	Shader shader_frag;
 	VertexArray vao;
 	ArrayBuffer vertex_buffer;
-	ArrayBuffer normal_buffer;
 	ElementBuffer element_buffer;
 
 	glm::mat4 _model_mat;

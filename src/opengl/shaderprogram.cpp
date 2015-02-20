@@ -17,20 +17,16 @@ void ShaderProgram::link(const Shader *vert, const Shader *frag)
 
 	glLinkProgram(id);
 
-	GLint status;
-	glGetShaderiv(id, GL_LINK_STATUS, &status);
+	GLint status = GL_FALSE;
+	glGetProgramiv(id, GL_LINK_STATUS, &status);
 
 	if (status == GL_FALSE) {
-        GLint infoLogLength;
-        glGetProgramiv(id, GL_INFO_LOG_LENGTH, &infoLogLength);
-		if (infoLogLength > 1024) {
-			glDetachShader(id, vert->id);
-			glDetachShader(id, frag->id);
-			errorf("Failed to link shaders and you are out of luck");
-		}
-
 		char buffer[1024];
-		glGetProgramInfoLog(id, 1024, NULL, buffer);
+		GLsizei length;
+		glGetProgramInfoLog(id, 1024, &length, buffer);
+
+		assertf(length > 1, "Shaders failed to link but the error log is %d "
+				"characters long", length);
 
 		std::string buf_str(buffer);
 		// strip trailing newline
@@ -62,20 +58,15 @@ void ShaderProgram::bindUniforms()
 	_view_mat_unif = glGetUniformLocation(id, "view");
 }
 
-void ShaderProgram::BindAttributes(const ArrayBuffer *vertex_buffer,
-		const ArrayBuffer *normal_buffer)
+void ShaderProgram::BindAttribute(const ArrayBuffer *buffer, const char *name,
+		GLint size, GLenum type, GLboolean normalized, GLsizei stride,
+		const GLvoid *ptr)
 {
-	vertex_buffer->Bind();
-	_position_attr = glGetAttribLocation(id, "position");
-	glEnableVertexAttribArray(_position_attr);
-	glVertexAttribPointer(_position_attr, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	vertex_buffer->Unbind();
-
-	normal_buffer->Bind();
-	_normal_attr = glGetAttribLocation(id, "normal");
-	glEnableVertexAttribArray(_normal_attr);
-	glVertexAttribPointer(_normal_attr, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	normal_buffer->Unbind();
+	buffer->Bind();
+	GLint attr = glGetAttribLocation(id, name);
+	glEnableVertexAttribArray(attr);
+	glVertexAttribPointer(attr, size, type, normalized, stride, ptr);
+	buffer->Unbind();
 }
 
 void ShaderProgram::UseThisProgram()

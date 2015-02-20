@@ -23,7 +23,7 @@ int main()
 		return 1;
 	} catch (std::exception &e) {
 		fprintf(stderr, "%s", AnsiColors.Red);
-		fprintf(stderr, "%s", e.what());
+		fprintf(stderr, "ERROR: %s", e.what());
 		fprintf(stderr, "%s\n", AnsiColors.Normal);
 		return 1;
 	}
