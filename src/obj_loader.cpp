@@ -22,20 +22,17 @@ void LoadOBJ(std::string path,
 		GLfloat x, y, z;
 		if (temp == "v") {
 			ifs >> x >> y >> z;
-			cout << "v " << x << " " << y << " " << z << endl;
 			vertices.push_back(x);
 			vertices.push_back(y);
 			vertices.push_back(z);
 		} else if (temp == "vn") {
 			ifs >> x >> y >> z;
-			cout << "vn " << x << " " << y << " " << z << endl;
 			normals.push_back(x);
 			normals.push_back(y);
 			normals.push_back(z);
 		} else if (temp == "f") {
 			GLushort a, b, c;
 			ifs >> a >> b >> c;
-			cout << "f " << a << " " << b << " " << c << endl;
 			elements.push_back(a);
 			elements.push_back(b);
 			elements.push_back(c);

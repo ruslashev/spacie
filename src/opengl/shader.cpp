@@ -31,8 +31,15 @@ void Shader::compile()
 	glGetShaderiv(id, GL_COMPILE_STATUS, &status);
 
 	if (status == GL_FALSE) {
-		char buffer[512];
-		glGetShaderInfoLog(id, 512, NULL, buffer);
+        GLint infoLogLength;
+        glGetProgramiv(id, GL_INFO_LOG_LENGTH, &infoLogLength);
+		assertf(infoLogLength < 1024,
+				"Failed to compile %s shader (\"%s\")\nand you are out of luck",
+				_debug_shader_type_str.c_str(),
+				_src_filename.c_str());
+
+		char buffer[1024];
+		glGetShaderInfoLog(id, 1024, NULL, buffer);
 
 		std::string buf_str(buffer);
 		// strip trailing newline

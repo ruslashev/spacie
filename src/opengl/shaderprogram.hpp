@@ -18,6 +18,7 @@ class ShaderProgram
 	GLint _proj_mat_unif;
 	GLint _view_mat_unif;
 
+	void link(const Shader *vert, const Shader *frag);
 	void bindUniforms();
 public:
 	GLuint id;
