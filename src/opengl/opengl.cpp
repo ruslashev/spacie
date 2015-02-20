@@ -1,6 +1,51 @@
 #include "opengl.hpp"
 
-void OpenGL::Construct(const unsigned int window_width, const unsigned int window_height)
+void generatePlanet(std::vector<GLfloat> *vertices,
+		std::vector<GLushort> *elements)
+{
+	struct vec3 {
+		float x, y, z;
+	};
+	struct triangle {
+		vec3 f, s, t;
+	};
+	printf("char size    : %lu\n", sizeof(char));
+	printf("float size   : %lu\n", sizeof(float));
+	printf("vec3 size    : %lu\n", sizeof(vec3));
+	printf("triangle size: %lu\n", sizeof(triangle));
+	std::vector<triangle> triangles;
+	const float a = 5;
+	triangles.push_back({
+			{ -a/2, 0, -a*sqrtf(3)/6.f},
+			{    0, 0,  a*sqrtf(3)/3.f},
+			{  a/2, 0, -a*sqrtf(3)/6.f}});
+	std::vector<GLfloat> verts;
+	std::vector<GLushort> elems;
+	elems.push_back(0);
+	for (size_t i = 0; i < triangles.size(); i++) {
+		verts.push_back(triangles[i].f.x);
+		verts.push_back(triangles[i].f.y);
+		verts.push_back(triangles[i].f.z);
+
+		verts.push_back(triangles[i].s.x);
+		verts.push_back(triangles[i].s.y);
+		verts.push_back(triangles[i].s.z);
+
+		verts.push_back(triangles[i].t.x);
+		verts.push_back(triangles[i].t.y);
+		verts.push_back(triangles[i].t.z);
+
+		elems.push_back(elems.back()+1);
+		elems.push_back(elems.back()+1);
+		elems.push_back(elems.back()+1);
+	}
+	elems.pop_back();
+	*vertices = verts;
+	*elements = elems;
+}
+
+void OpenGL::Construct(const unsigned int window_width,
+		const unsigned int window_height)
 {
 	vao.Construct();
 
@@ -8,7 +53,7 @@ void OpenGL::Construct(const unsigned int window_width, const unsigned int windo
 
 	std::vector<GLfloat> vertices;
 	std::vector<GLushort> elements;
-	LoadOBJ("suzanne.obj", &vertices, NULL, &elements);
+	generatePlanet(&vertices, &elements);
 
 	vertex_buffer.Construct();
 	vertex_buffer.Upload(vertices);
