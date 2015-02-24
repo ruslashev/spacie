@@ -32,7 +32,6 @@ void generatePlanet(std::vector<GLfloat> *vertices,
 	};
 	struct triangle {
 		unsigned int f, s, t;
-		bool dirty;
 	};
 
 	std::vector<triangle> triangles;
@@ -53,55 +52,50 @@ void generatePlanet(std::vector<GLfloat> *vertices,
 	used_vertices.push_back(B);
 	used_vertices.push_back(C);
 
-	triangles.push_back({0,1,3, false});
-	triangles.push_back({0,3,2, false});
-	triangles.push_back({0,1,2, false});
-	triangles.push_back({1,2,3, false});
+	triangles.push_back({0,1,3});
+	triangles.push_back({0,3,2});
+	triangles.push_back({0,1,2});
+	triangles.push_back({1,2,3});
 
-	const size_t triangles_len = triangles.size();
-	for (size_t i = 0; i < triangles_len; i++) {
-		const triangle t = triangles[i];
-		if (t.dirty)
-			continue;
+	for (int d = 0; d < 5; d++) {
+		for (size_t i = triangles.size(); i-- > 0; ) {
+			const triangle t = triangles[i];
 
-		// if you want to understand the code below,
-		// grab a pen & paper
+			// if you want to understand the code below,
+			// grab a pen & paper ;)
 
-		const unsigned int f_i = t.f;
-		const unsigned int s_i = t.s;
-		const unsigned int t_i = t.t;
+			const unsigned int f_i = t.f;
+			const unsigned int s_i = t.s;
+			const unsigned int t_i = t.t;
 
-		v3 f_v = used_vertices[f_i];
-		v3 s_v = used_vertices[s_i];
-		v3 t_v = used_vertices[t_i];
+			const v3 f_v = used_vertices[f_i];
+			const v3 s_v = used_vertices[s_i];
+			const v3 t_v = used_vertices[t_i];
 
-		const v3 midp_fs = f_v.avg(s_v);
-		const v3 midp_ft = f_v.avg(t_v);
-		const v3 midp_st = s_v.avg(t_v);
+			const v3 midp_fs = f_v.avg(s_v);
+			const v3 midp_ft = f_v.avg(t_v);
+			const v3 midp_st = s_v.avg(t_v);
 
-		used_vertices.push_back(midp_fs);
-		const unsigned int fs_i = used_vertices.size()-1;
-		used_vertices.push_back(midp_ft);
-		const unsigned int ft_i = used_vertices.size()-1;
-		used_vertices.push_back(midp_st);
-		const unsigned int st_i = used_vertices.size()-1;
+			used_vertices.push_back(midp_fs);
+			const unsigned int fs_i = used_vertices.size()-1;
+			used_vertices.push_back(midp_ft);
+			const unsigned int ft_i = used_vertices.size()-1;
+			used_vertices.push_back(midp_st);
+			const unsigned int st_i = used_vertices.size()-1;
 
-		triangle new_f_ft_fs { f_i, ft_i, fs_i, true };
-		triangle new_s_fs_st { s_i, fs_i, st_i, true };
-		triangle new_t_st_ft { t_i, st_i, ft_i, true };
-		triangle new_fs_st_ft { fs_i, st_i, ft_i, true };
+			const triangle new_f_ft_fs { f_i, ft_i, fs_i };
+			const triangle new_s_fs_st { s_i, fs_i, st_i };
+			const triangle new_t_st_ft { t_i, st_i, ft_i };
+			const triangle new_fs_st_ft { fs_i, st_i, ft_i };
 
-		// todo: is dirty even needed?
-		triangles.erase(triangles.begin()+i);
-		triangles.insert(triangles.begin()+i, new_f_ft_fs);
-		triangles.insert(triangles.begin()+i, new_s_fs_st);
-		triangles.insert(triangles.begin()+i, new_t_st_ft);
-		triangles.insert(triangles.begin()+i, new_fs_st_ft);
-		i += 4;
-		i--; // because of the increment in for loop
+			// todo: is dirty even needed?
+			triangles.erase(triangles.begin()+i);
+			triangles.push_back(new_f_ft_fs);
+			triangles.push_back(new_s_fs_st);
+			triangles.push_back(new_t_st_ft);
+			triangles.push_back(new_fs_st_ft);
+		}
 	}
-	for (size_t i = 0; i < triangles.size(); i++)
-		triangles[i].dirty = false;
 
 	std::vector<GLfloat> local_vertices;
 	std::vector<GLushort> local_elements;
