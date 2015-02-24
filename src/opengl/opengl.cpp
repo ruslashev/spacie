@@ -3,11 +3,40 @@
 void generatePlanet(std::vector<GLfloat> *vertices,
 		std::vector<GLushort> *elements)
 {
+	static unsigned short element_counter = 0;
 	struct v3 {
 		float x, y, z;
+		unsigned short id;
+		v3(float nx, float ny, float nz) {
+			x = nx;
+			y = ny;
+			z = nz;
+			id = element_counter++;
+			printf("create id %d (%f %f %f)\n", id, x, y, z);
+		};
+		v3 avg(const v3 &b) const {
+			const float nx = (x + b.x)/2;
+			const float ny = (y + b.y)/2;
+			const float nz = (z + b.z)/2;
+			v3 nv(nx, ny, nz);
+			nv.normalize();
+			return nv;
+		}
+		v3 operator/(const float &r) { return v3(x/r, y/r, z/r); }
+		v3 operator*(const float &r) { return v3(x*r, y*r, z*r); }
+		float len() const { return sqrtf(x*x + y*y + z*z); }
+		void normalize() {
+			const float l = len();
+			if ((int)l == 0)
+				return;
+			x /= l;
+			y /= l;
+			z /= l;
+		}
 	};
 	struct triangle {
 		v3 f, s, t;
+		bool dirty;
 	};
 
 	std::vector<triangle> triangles;
@@ -22,44 +51,62 @@ void generatePlanet(std::vector<GLfloat> *vertices,
 	const v3 B = {    0,  0,  b };
 	const v3 C = {  a/2,  0, -s };
 
-	struct lookup_list {
-		std::vector<v3> list;
-		const size_t operator[](const v3 &k) const {
-			for (size_t i = 0; i < list.size(); i++)
-				if ((k.x == list[i].x) &&
-					(k.y == list[i].y) &&
-					(k.z == list[i].z))
-					return i;
-			return 0;
-		}
-	};
-	lookup_list elem_lookup;
-	elem_lookup.list = {D, A, B, C};
+	triangles.push_back({D,A,C, false});
+	triangles.push_back({D,C,B, false});
+	triangles.push_back({D,A,B, false});
+	triangles.push_back({A,B,C, false});
 
-	triangles.push_back({D,A,C});
-	triangles.push_back({D,C,B});
-	triangles.push_back({D,A,B});
-	triangles.push_back({A,B,C});
+	for (auto &t : triangles) {
+		if (t.dirty)
+			continue;
+
+		v3 midp_fs = t.f.avg(t.s);
+		v3 midp_ft = t.f.avg(t.t);
+		v3 midp_st = t.s.avg(t.t);
+
+		triangle new_tri { midp_fs, midp_ft, midp_st, true };
+
+		triangles.push_back(new_tri);
+	}
+	for (size_t i = 0; i < triangles.size(); i++)
+		triangles[i].dirty = false;
 
 	std::vector<GLfloat> lv; // local_vertices
 	std::vector<GLushort> le; // local_elements
-	for (size_t i = 0; i < triangles.size(); i++) {
-		lv.push_back(triangles[i].f.x);
-		lv.push_back(triangles[i].f.y);
-		lv.push_back(triangles[i].f.z);
+	std::vector<bool> pushed;
+	pushed.resize(triangles.size()*3, 0);
+	for (auto &t : triangles) {
+		if (!pushed[t.f.id]) {
+			pushed[t.f.id] = true;
+			lv.push_back(t.f.x);
+			lv.push_back(t.f.y);
+			lv.push_back(t.f.z);
+			le.push_back(t.f.id);
+		} else {
+			le.push_back(t.f.id);
+		}
 
-		lv.push_back(triangles[i].s.x);
-		lv.push_back(triangles[i].s.y);
-		lv.push_back(triangles[i].s.z);
+		if (!pushed[t.s.id]) {
+			pushed[t.s.id] = true;
+			lv.push_back(t.s.x);
+			lv.push_back(t.s.y);
+			lv.push_back(t.s.z);
+			le.push_back(t.s.id);
+		} else {
+			le.push_back(t.s.id);
+		}
 
-		lv.push_back(triangles[i].t.x);
-		lv.push_back(triangles[i].t.y);
-		lv.push_back(triangles[i].t.z);
-
-		le.push_back(elem_lookup[triangles[i].f]);
-		le.push_back(elem_lookup[triangles[i].s]);
-		le.push_back(elem_lookup[triangles[i].t]);
+		if (!pushed[t.t.id]) {
+			pushed[t.t.id] = true;
+			lv.push_back(t.t.x);
+			lv.push_back(t.t.y);
+			lv.push_back(t.t.z);
+			le.push_back(t.t.id);
+		} else {
+			le.push_back(t.t.id);
+		}
 	}
+
 	*vertices = lv;
 	*elements = le;
 }
@@ -93,16 +140,17 @@ void OpenGL::Construct(const unsigned int window_width,
 
 	float aspect_ratio = (float)window_width/(float)window_height;
 	_proj_mat = glm::perspective(45.0f, aspect_ratio, 1.0f, 20.0f);
-
-	_view_mat = glm::lookAt(
-			glm::vec3(4, 4, 4),
-			glm::vec3(0, 0, 0),
-			glm::vec3(0, 1, 0));
 }
 
 void OpenGL::Draw()
 {
 	shader_program.UseThisProgram();
+
+	_view_mat = glm::lookAt(
+			glm::vec3(4, 4, 4),
+			glm::vec3(0, 0, 0),
+			glm::vec3(0, 1, 0));
+
 	shader_program.UpdateMatrices(_model_mat, _view_mat, _proj_mat);
 
 	glClearColor(0, 0, 0, 1);
