@@ -142,17 +142,21 @@ void OpenGL::Construct(const unsigned int window_width,
 	_proj_mat = glm::perspective(45.0f, aspect_ratio, 1.0f, 20.0f);
 }
 
-void OpenGL::Draw()
+void OpenGL::Update(unsigned int dt, unsigned int t)
 {
 	shader_program.UseThisProgram();
 
+	float time_mod = (float)t/1000.f;
 	_view_mat = glm::lookAt(
-			glm::vec3(4, 4, 4),
-			glm::vec3(0, 0, 0),
+			glm::vec3(4*cosf(time_mod), 2, 4*sinf(time_mod)),
+			glm::vec3(0, 1, 0),
 			glm::vec3(0, 1, 0));
 
 	shader_program.UpdateMatrices(_model_mat, _view_mat, _proj_mat);
+}
 
+void OpenGL::Draw()
+{
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 

@@ -11,17 +11,9 @@ Painter::Painter() : _window_width(800), _window_height(600)
 	opengl.Construct(_window_width, _window_height);
 }
 
-void Painter::HandleInput()
+void Painter::Update(unsigned int dt, unsigned int t)
 {
-	if (SDL_PollEvent(&_event)) {
-		if (_event.type == SDL_QUIT)
-			Quit = true;
-		if (_event.type == SDL_KEYUP &&
-				_event.key.keysym.sym == SDLK_ESCAPE)
-			Quit = true;
-		if (_event.type == SDL_WINDOWEVENT_RESIZED)
-			opengl.Resize(_event.window.data1, _event.window.data2);
-	}
+	opengl.Update(dt, t);
 }
 
 void Painter::Draw()
@@ -45,8 +37,6 @@ void Painter::init_do_SDL_calls()
 			SDL_WINDOW_OPENGL);
 
 	_gl_context = SDL_GL_CreateContext(_window);
-
-	Quit = false;
 }
 
 Painter::~Painter()

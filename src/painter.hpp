@@ -12,20 +12,18 @@ class Painter
 {
 	SDL_Window *_window;
 	SDL_GLContext _gl_context;
-	SDL_Event _event;
-	OpenGL opengl;
 
 	const unsigned int _window_width;
 	const unsigned int _window_height;
 
 	void init_do_SDL_calls();
 public:
-	bool Quit;
+	OpenGL opengl;
 
 	Painter();
 	~Painter();
 
-	void HandleInput();
+	void Update(unsigned int dt, unsigned int t);
 	void Draw();
 };
 

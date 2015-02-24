@@ -1,21 +1,12 @@
 #include <stdexcept>
-#include "painter.hpp"
+#include "looper.hpp"
 #include "utils.hpp"
-
-void startGame()
-{
-	Painter painter;
-
-	while (!painter.Quit) {
-		painter.HandleInput();
-		painter.Draw();
-	}
-}
 
 int main()
 {
 	try {
-		startGame();
+		Looper looper;
+		looper.MainLoop();
 	} catch (std::bad_alloc &ba) {
 		fprintf(stderr, "%s", AnsiColors.Red);
 		fprintf(stderr, "Failed to allocate memory: %s", ba.what());

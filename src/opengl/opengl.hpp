@@ -30,6 +30,7 @@ class OpenGL
 	GLuint temp_elements_size;
 public:
 	void Construct(const unsigned int window_width, const unsigned int window_height);
+	void Update(unsigned int dt, unsigned int t);
 	void Draw();
 	void Resize(const int new_width, const int new_height);
 };
