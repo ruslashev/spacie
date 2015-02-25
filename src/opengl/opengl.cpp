@@ -15,7 +15,7 @@ void generatePlanet(std::vector<GLfloat> *vertices,
 			const float ny = (y + b.y)/2;
 			const float nz = (z + b.z)/2;
 			v3 nv(nx, ny, nz);
-			// nv.normalize();
+			nv.normalize();
 			return nv;
 		}
 		v3 operator/(const float &r) { return v3(x/r, y/r, z/r); }
@@ -23,7 +23,7 @@ void generatePlanet(std::vector<GLfloat> *vertices,
 		float len() const { return sqrtf(x*x + y*y + z*z); }
 		void normalize() {
 			const float l = len();
-			if ((int)l == 0)
+			if (std::abs(l) < 0.0000001)
 				return;
 			x /= l;
 			y /= l;
@@ -36,15 +36,21 @@ void generatePlanet(std::vector<GLfloat> *vertices,
 
 	std::vector<triangle> triangles;
 
-	const float a = 3;                // right triangle edge
+	const float a = 2;                // right triangle edge
 	const float s = a*sqrtf(3)/6;     // the one third of altitude
 	const float b = a*sqrtf(3)/3;     // the two thirds
 	const float H = a*sqrtf(2.f/3.f); // height in space
+	const float R = a*sqrtf(3.f/8.f); // radius of circumsphere
+	const float d = H-R;              // height difference for downward push
 
-	const v3 D = {    0,  H,  0 };
-	const v3 A = { -a/2,  0, -s };
-	const v3 B = {    0,  0,  b };
-	const v3 C = {  a/2,  0, -s };
+	v3 D = {    0,  H-d,  0 };
+	v3 A = { -a/2,  0-d, -s };
+	v3 B = {    0,  0-d,  b };
+	v3 C = {  a/2,  0-d, -s };
+	D.normalize();
+	A.normalize();
+	B.normalize();
+	C.normalize();
 
 	std::vector<v3> used_vertices;
 	used_vertices.push_back(D);
@@ -57,7 +63,7 @@ void generatePlanet(std::vector<GLfloat> *vertices,
 	triangles.push_back({0,1,2});
 	triangles.push_back({1,2,3});
 
-	for (int d = 0; d < 5; d++) {
+	for (int d = 0; d < 4; d++) {
 		for (size_t i = triangles.size(); i-- > 0; ) {
 			const triangle t = triangles[i];
 
@@ -88,7 +94,6 @@ void generatePlanet(std::vector<GLfloat> *vertices,
 			const triangle new_t_st_ft { t_i, st_i, ft_i };
 			const triangle new_fs_st_ft { fs_i, st_i, ft_i };
 
-			// todo: is dirty even needed?
 			triangles.erase(triangles.begin()+i);
 			triangles.push_back(new_f_ft_fs);
 			triangles.push_back(new_s_fs_st);
@@ -100,9 +105,9 @@ void generatePlanet(std::vector<GLfloat> *vertices,
 	std::vector<GLfloat> local_vertices;
 	std::vector<GLushort> local_elements;
 	for (auto &v : used_vertices) {
-		local_vertices.push_back(v.x);
-		local_vertices.push_back(v.y);
-		local_vertices.push_back(v.z);
+		local_vertices.push_back(v.x*a);
+		local_vertices.push_back(v.y*a);
+		local_vertices.push_back(v.z*a);
 	}
 	for (auto &t : triangles) {
 		local_elements.push_back(t.f);
@@ -152,7 +157,7 @@ void OpenGL::Update(unsigned int dt, unsigned int t)
 	float time_mod = (float)t/1000.f;
 	_view_mat = glm::lookAt(
 			glm::vec3(4*cosf(time_mod), 2, 4*sinf(time_mod)),
-			glm::vec3(0, 1, 0),
+			glm::vec3(0, 0, 0),
 			glm::vec3(0, 1, 0));
 
 	shader_program.UpdateMatrices(_model_mat, _view_mat, _proj_mat);
