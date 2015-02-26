@@ -11,7 +11,7 @@
 
 class ShaderProgram
 {
-	GLint _color_unif;
+	// GLint _color_unif;
 	GLint _model_mat_unif;
 	GLint _proj_mat_unif;
 	GLint _view_mat_unif;

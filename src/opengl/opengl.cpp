@@ -36,34 +36,66 @@ void generatePlanet(std::vector<GLfloat> *vertices,
 
 	std::vector<triangle> triangles;
 
-	const float a = 2;                // right triangle edge
-	const float s = a*sqrtf(3)/6;     // the one third of altitude
-	const float b = a*sqrtf(3)/3;     // the two thirds
-	const float H = a*sqrtf(2.f/3.f); // height in space
-	const float R = a*sqrtf(3.f/8.f); // radius of circumsphere
-	const float d = H-R;              // height difference for downward push
+	const float a = 2;                // edge
+	const float phi = (1+sqrtf(5))/2; // golden ratio
 
-	v3 D = {    0,  H-d,  0 };
-	v3 A = { -a/2,  0-d, -s };
-	v3 B = {    0,  0-d,  b };
-	v3 C = {  a/2,  0-d, -s };
-	D.normalize();
-	A.normalize();
-	B.normalize();
-	C.normalize();
+	const v3 A_v   = {    0,    1,  phi };
+	const v3 B_v   = {    1,  phi,    0 };
+	const v3 C_v   = {  phi,    0,    1 };
+	const v3 Ay_v  = {    0,   -1,  phi };
+	const v3 Az_v  = {    0,    1, -phi };
+	const v3 Ayz_v = {    0,   -1, -phi };
+	const v3 Bx_v  = {   -1,  phi,    0 };
+	const v3 By_v  = {    1, -phi,    0 };
+	const v3 Bxy_v = {   -1, -phi,    0 };
+	const v3 Cx_v  = { -phi,    0,    1 };
+	const v3 Cz_v  = {  phi,    0,   -1 };
+	const v3 Cxz_v = { -phi,    0,   -1 };
 
-	std::vector<v3> used_vertices;
-	used_vertices.push_back(D);
-	used_vertices.push_back(A);
-	used_vertices.push_back(B);
-	used_vertices.push_back(C);
+	const unsigned int A   =  0;
+	const unsigned int B   =  1;
+	const unsigned int C   =  2;
+	const unsigned int Ay  =  3;
+	const unsigned int Az  =  4;
+	const unsigned int Ayz =  5;
+	const unsigned int Bx  =  6;
+	const unsigned int By  =  7;
+	const unsigned int Bxy =  8;
+	const unsigned int Cx  =  9;
+	const unsigned int Cz  = 10;
+	const unsigned int Cxz = 11;
 
-	triangles.push_back({0,1,3});
-	triangles.push_back({0,3,2});
-	triangles.push_back({0,1,2});
-	triangles.push_back({1,2,3});
+	std::vector<v3> used_vertices { A_v, B_v, C_v, Ay_v, Az_v, Ayz_v,
+		Bx_v, By_v, Bxy_v, Cx_v, Cz_v, Cxz_v };
 
-	for (int d = 0; d < 4; d++) {
+	for (auto &v : used_vertices)
+		v.normalize();
+
+	triangles.push_back({B  , Bx , A  });
+	triangles.push_back({B  , Bx , Az });
+	triangles.push_back({By , Bxy, Ay });
+	triangles.push_back({By , Bxy, Ayz});
+
+	triangles.push_back({A  , Ay , C  });
+	triangles.push_back({A  , Ay , Cx });
+	triangles.push_back({Az , Ayz, Cz });
+	triangles.push_back({Az , Ayz, Cxz});
+
+	triangles.push_back({C  , Cz , B  });
+	triangles.push_back({C  , Cz , By });
+	triangles.push_back({Cx , Cxz, Bx });
+	triangles.push_back({Cx , Cxz, Bxy});
+
+	triangles.push_back({B  , A  , C  });
+	triangles.push_back({B  , Az , Cz });
+	triangles.push_back({Bx , A  , Cx });
+	triangles.push_back({Bx , Az , Cxz});
+	triangles.push_back({Bxy, Ay , Cx });
+	triangles.push_back({Bxy, Ayz, Cxz});
+	triangles.push_back({By , Ay , C  });
+	triangles.push_back({By , Ayz, Cz });
+
+	for (int d = 0; d < 3; d++) {
 		for (size_t i = triangles.size(); i-- > 0; ) {
 			const triangle t = triangles[i];
 
@@ -102,12 +134,16 @@ void generatePlanet(std::vector<GLfloat> *vertices,
 		}
 	}
 
+	for (auto &v : used_vertices) {
+		v = v*(a+(rand() % 100)/200.f);
+	}
+
 	std::vector<GLfloat> local_vertices;
 	std::vector<GLushort> local_elements;
 	for (auto &v : used_vertices) {
-		local_vertices.push_back(v.x*a);
-		local_vertices.push_back(v.y*a);
-		local_vertices.push_back(v.z*a);
+		local_vertices.push_back(v.x);
+		local_vertices.push_back(v.y);
+		local_vertices.push_back(v.z);
 	}
 	for (auto &t : triangles) {
 		local_elements.push_back(t.f);
@@ -168,8 +204,10 @@ void OpenGL::Draw()
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 	element_buffer.Bind();
-	glDrawElements(GL_POINTS, temp_elements_size, GL_UNSIGNED_SHORT, 0);
+	glDrawElements(GL_TRIANGLES, temp_elements_size, GL_UNSIGNED_SHORT, 0);
 	element_buffer.Unbind();
 	shader_program.DontUseThisProgram();
 }

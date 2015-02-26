@@ -46,8 +46,8 @@ void ShaderProgram::link(const Shader *vert, const Shader *frag)
 
 void ShaderProgram::bindUniforms()
 {
-	_color_unif = glGetUniformLocation(id, "triangleColor");
-	glUniform3f(_color_unif, 0.0f, 1.0f, 0.0f);
+	// _color_unif = glGetUniformLocation(id, "triangleColor");
+	// glUniform3f(_color_unif, 0.0f, 1.0f, 0.0f);
 
 	_model_mat_unif = glGetUniformLocation(id, "model");
 	_proj_mat_unif = glGetUniformLocation(id, "proj");
